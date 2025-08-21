@@ -17,6 +17,7 @@ class Task:
        self.description = description
        self.due_date = due_date
        self.completed = completed
+       self.priority = priority
 
    def mark_completed(self):
        self.completed = True
@@ -35,8 +36,8 @@ class TaskManager:
        self.next_id = max([t.id for t in self.tasks] + [0]) + 1 if self.tasks else 1
        print(f"Loaded {len(self.tasks)} tasks. Next ID: {self.next_id}")
 
-   def add_task(self, description, due_date=None):
-       task = Task(self.next_id, description, due_date)
+   def add_task(self, description, due_date=None, priority="medium"):
+       task = Task(self.next_id, description, due_date, False, priority)
        self.tasks.append(task)
        self.next_id += 1
        self.storage.save_tasks(self.tasks) # Save after adding
@@ -87,8 +88,8 @@ if __name__ == "__main__":
    manager = TaskManager(file_storage) # ส่ง FileTaskStorage เข้าไปเป็นอากิวเมนต์
 
    manager.list_tasks()
-   manager.add_task("Review SOLID Principles", "2024-08-10")
-   manager.add_task("Prepare for Final Exam", "2024-08-15")
+   manager.add_task("Review SOLID Principles", "2024-08-10", priority="high")
+   manager.add_task("Prepare for Final Exam", "2024-08-15", priority="low")
    manager.list_tasks()
    manager.mark_task_completed(1)
    manager.list_tasks()
